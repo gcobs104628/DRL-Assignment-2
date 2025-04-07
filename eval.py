@@ -1,4 +1,3 @@
-# custom_taxi_env.py
 import gym
 import numpy as np
 import time
@@ -13,14 +12,11 @@ import torch
 import random
 import sys
 import importlib
-import Game2048Env
+import env
 
 
 
 if __name__ == "__main__":
-    Game2048Env.eval_score()  
+    env.eval_score()  
     
 
-
-
-    

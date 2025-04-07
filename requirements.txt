@@ -3,7 +3,5 @@ requests
 argparse
 torch
 matplotlib
-matplotlib 
 numpy
 gym
-random

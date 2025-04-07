@@ -21,7 +21,7 @@ gdown.download(url, output='downloaded_file.pkl', quiet=False, fuzzy=True)
 def get_action(state, score):
     env = Game2048Env()
     approximator = NTupleApproximator.load_model("downloaded_file.pkl")
-    
+###print(hello)
     def value_function(state):
         return approximator.value(state)
     iterations = 500

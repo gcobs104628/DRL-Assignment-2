@@ -6,6 +6,5 @@ matplotlib
 matplotlib 
 numpy
 gym
-gdown
 collections
 random

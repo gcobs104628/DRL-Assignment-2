@@ -2,3 +2,10 @@ tqdm
 requests
 argparse
 torch
+matplotlib
+matplotlib 
+numpy
+gym
+gdown
+collections
+random

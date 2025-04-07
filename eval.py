@@ -13,12 +13,12 @@ import torch
 import random
 import sys
 import importlib
-import env
+import Game2048Env
 
 
 
 if __name__ == "__main__":
-    env.eval_score()  
+    Game2048Env.eval_score()  
     
 
 

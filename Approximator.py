@@ -448,7 +448,7 @@ def play_game(model_path, num_games=1, render=True):
     print(f"Max Tiles: {max_tiles}")
     
     return win_rate, avg_score
-def generate_symmetry(patterns: list[tuple],sym:set):
+def generate_symmetry(patterns, sym):
     
     for pattern in patterns:
         sym.add(tuple(pattern))

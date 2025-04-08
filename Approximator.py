@@ -144,9 +144,11 @@ class NTupleApproximator:
         
         # Create a new model instance
         model = cls(board_size, patterns, symmetry_patterns)
-        
+        model.weights = [defaultdict(float) for _ in range(len(patterns))]
+
         # Load the weights
-        model.weights = weights
+        for i in range(len(weights)):
+            model.weights[i].update(weights[i])
         
         print(f"Model loaded from {filename}")
         return model

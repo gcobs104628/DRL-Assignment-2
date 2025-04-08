@@ -5,7 +5,7 @@ import numpy as np
 from collections import defaultdict
 from Game2048Env import Game2048Env
 from Approximator import NTupleApproximator
-
+import gdown
 # UCT Node for MCTS with afterstate handling
 class UCTNode:
     def __init__(self, state, score, parent=None, action=None, is_chance_node=False):
@@ -319,5 +319,9 @@ def play_with_mcts(env, approximator, iterations=500, exploration_constant=0.01)
 if __name__ == "__main__":
     # Example usage of the play_with_mcts function
     env = Game2048Env()
-    approximator = NTupleApproximator.load_model("reward_2048_model_retrainlonglong_11000.pkl")
-    play_with_mcts(env, approximator, iterations=500, exploration_constant=0.01)
+    # approximator = NTupleApproximator.load_model("reward_2048_model_retrainlonglong_11000.pkl")
+    url = 'https://drive.google.com/file/d/1uWQpFqBKV6F1DVydF-MJfcqMhZj5702G/view?usp=sharing'
+
+    gdown.download(url, output='downloaded_file.pkl', quiet=False, fuzzy=True)
+    approximator = NTupleApproximator.load_model("downloaded_file.pkl")
+    play_with_mcts(env, approximator, iterations=500, exploration_constant=0.001)

@@ -13,25 +13,27 @@ from Game2048Env import Game2048Env
 from Approximator import NTupleApproximator
 from UCTMCTS import *
 import gdown
-
 # 方法 1：使用模糊匹配（自動轉換連結）
-url = 'https://drive.google.com/file/d/1o4NDbGB03qLXtYKSDBBul6MqYUq37n0x/view?usp=share_link'
-gdown.download(url, output='downloaded_file.pkl', quiet=False, fuzzy=True)
+url = 'https://drive.google.com/file/d/1uWQpFqBKV6F1DVydF-MJfcqMhZj5702G/view?usp=sharing'
 
+gdown.download(url, output='downloaded_file.pkl', quiet=False, fuzzy=True)
+approximator = NTupleApproximator.load_model("downloaded_file.pkl")
+##
 def get_action(state, score):
+    global approximator
     env = Game2048Env()
-    approximator = NTupleApproximator.load_model("downloaded_file.pkl")
-###print(hello)
+    
+    # print("hello")
     def value_function(state):
         return approximator.value(state)
     iterations = 500
-    exploration_constant = 0.01
+    exploration_constant = 0.001
     
     # Create the MCTS agent
     mcts = UCTMCTS(env, value_function, iterations, exploration_constant)
     
     # Play the game
-    state = env.reset()
+    env.reset()
     done = False
     env.state = state
     env.score = score

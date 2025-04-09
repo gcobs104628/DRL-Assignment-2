@@ -1,6 +1,9 @@
 import sys
 import numpy as np
 import random
+import agent
+from loguru import logger
+
 
 class Connect6Game:
     def __init__(self, size=19):
@@ -108,6 +111,8 @@ class Connect6Game:
 
         empty_positions = [(r, c) for r in range(self.size) for c in range(self.size) if self.board[r, c] == 0]
         selected = random.sample(empty_positions, 1)
+        selected = [agent.select_move(self.board, color)]
+        
         move_str = ",".join(f"{self.index_to_label(c)}{r+1}" for r, c in selected)
         
         self.play_move(color, move_str)
@@ -133,7 +138,7 @@ class Connect6Game:
         """Parses and executes GTP commands."""
         command = command.strip()
         if command == "get_conf_str env_board_size:":
-            return "env_board_size=19"
+            print("env_board_size=19", flush=True)
 
         if not command:
             return

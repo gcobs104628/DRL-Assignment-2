@@ -16,7 +16,7 @@ class Connect6Game:
         self.turn = 1
         self.game_over = False
         print("= ", flush=True)
-
+        return
     def set_board_size(self, size):
         """Changes board size and resets the game."""
         self.size = size
@@ -89,11 +89,23 @@ class Connect6Game:
         if self.game_over:
             print("? Game over", flush=True)
             return
+            
+        if np.count_nonzero(self.board) == 0:
+            middle = self.size // 2
+            move_str = f"{self.index_to_label(middle)}{middle+1}"
+            self.play_move(color, move_str)
+            
+            print(move_str, flush=True)
+            
+            print(move_str, file=sys.stderr)
 
+            return
         my_color = 1 if color.upper() == 'B' else 2
         opponent_color = 3 - my_color
         empty_positions = [(r, c) for r in range(self.size) for c in range(self.size) if self.board[r, c] == 0]
-
+        
+        
+        
         # 1. Winning move
         for r, c in empty_positions:
             self.board[r, c] = my_color
@@ -115,10 +127,17 @@ class Connect6Game:
                 print(move_str, flush=True)
                 return
             self.board[r, c] = 0
-
+        
+        if random.uniform(0, 1) < 0.15:
+            selected = random.choice(empty_positions)
+            move_str = f"{self.index_to_label(selected[1])}{selected[0]+1}"
+            self.play_move(color, move_str)
+            print(move_str, flush=True)
+            return
+        
         # 3. Attack: prioritize strong formations
         best_move = None
-        best_score = -1
+        best_score = 0
         for r, c in empty_positions:
             score = self.evaluate_position(r, c, my_color)
             if score > best_score:
@@ -128,7 +147,7 @@ class Connect6Game:
         # 4. Defense: prevent opponent from forming strong positions
         for r, c in empty_positions:
             opponent_score = self.evaluate_position(r, c, opponent_color)
-            if opponent_score >= best_score:
+            if opponent_score > best_score:
                 best_score = opponent_score
                 best_move = (r, c)
 
@@ -142,6 +161,7 @@ class Connect6Game:
 
         # 6. Default move: play near last opponent move
         if self.last_opponent_move:
+            
             last_r, last_c = self.last_opponent_move
             potential_moves = [(r, c) for r in range(max(0, last_r - 2), min(self.size, last_r + 3))
                                            for c in range(max(0, last_c - 2), min(self.size, last_c + 3))
@@ -158,7 +178,7 @@ class Connect6Game:
         move_str = f"{self.index_to_label(selected[1])}{selected[0]+1}"
         self.play_move(color, move_str)
         print(move_str, flush=True)
-
+        return
     def evaluate_position(self, r, c, color):
         """Evaluates the strength of a position based on alignment potential."""
         directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
@@ -185,6 +205,7 @@ class Connect6Game:
                 score += 1000
             elif count == 2:
                 score += 100
+            
     
         return score
     def show_board(self):

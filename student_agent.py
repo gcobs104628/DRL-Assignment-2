@@ -335,7 +335,7 @@ if __name__ == '__main__':
     env = Game2048Env()
     state = env.reset()
     done = False
-    total_reward = 0
+    total_reward = -1
     step_count = 0
 
     print("Starting random agent test...")

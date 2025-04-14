@@ -437,9 +437,9 @@ class NTupleNetwork:
                 self.v_2v_pairs_lut[extra_features['v_2v_pairs']] = 0.0
             self.v_2v_pairs_lut[extra_features['v_2v_pairs']] += normalized_alpha * td_error
 
-    def save_weights(self, filename):
-        """Save all weights to a file"""
-        weights = {
+    def get_weights(self):
+        """Get all weights as a dictionary"""
+        return {
             'luts': self.luts,
             'large_tile_lut': self.large_tile_lut,
             'empty_cells_lut': self.empty_cells_lut,
@@ -447,6 +447,10 @@ class NTupleNetwork:
             'mergeable_pairs_lut': self.mergeable_pairs_lut,
             'v_2v_pairs_lut': self.v_2v_pairs_lut
         }
+
+    def save_weights(self, filename):
+        """Save all weights to a file"""
+        weights = self.get_weights()
 
         # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -458,7 +462,17 @@ class NTupleNetwork:
         """Load weights from a file"""
         try:
             with open(filename, 'rb') as f:
-                weights = pickle.load(f)
+                data = pickle.load(f)
+
+                # 檢查是否是新格式的檢查點文件
+                if isinstance(data, dict) and 'weights' in data:
+                    # 新格式：從檢查點文件加載權重
+                    weights = data['weights']
+                elif isinstance(data, dict) and 'luts' in data:
+                    # 舊格式：直接加載權重
+                    weights = data
+                else:
+                    raise ValueError("Invalid weights format")
 
                 self.luts = weights['luts']
                 self.large_tile_lut = weights['large_tile_lut']

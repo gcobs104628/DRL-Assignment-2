@@ -3,3 +3,8 @@ requests
 argparse
 torch
 matplotlib
+numpy==1.24.4
+minigrid
+gymnasium
+imageio
+IPython
